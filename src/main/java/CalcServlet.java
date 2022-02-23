@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,18 +9,17 @@ import javax.servlet.http.HttpServletResponse;
 import bsh.EvalError;
 import bsh.Interpreter;
 
-@WebServlet("/calc")
 public class CalcServlet extends HttpServlet {
 
-	private static String Calc(HttpServletRequest req) {
+	private String calc(HttpServletRequest req) {
 
-		String expr_origin = req.getParameter("expression");
+		String exprOrigin = req.getParameter("expression");
 		StringBuilder expression = new StringBuilder();
-		for (int i = 0; i < expr_origin.length(); ++i) {
-			char c = expr_origin.charAt(i);
+		for (int i = 0; i < exprOrigin.length(); ++i) {
+			char c = exprOrigin.charAt(i);
 			if ((c >= 'a') && (c <= 'z')) {
 				char value = req.getParameter(String.valueOf(c)).charAt(0);
-				if ((value >= 'a') && (value <= 'z')) { // check if value is name of another variable
+				if ((value >= 'a') && (value <= 'z')) { 
 					expression.append(req.getParameter(String.valueOf(value)));
 				} else {
 					expression.append(req.getParameter(String.valueOf(c)));
@@ -49,6 +47,6 @@ public class CalcServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		PrintWriter writer = resp.getWriter();
-		writer.write(Calc(req));
+		writer.write(calc(req));
 	}
 }
